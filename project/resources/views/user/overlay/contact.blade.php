@@ -55,7 +55,7 @@
 
                             <div class="col-sm-6 col-xxl-4">
                                 <label for="form_label" class="form-label">@lang('Form Label')</label>
-                                <input type="text" id="form_label" placeholder="@lang('Mail Send')" name="form-label" class="form-control form--control bg--section" >
+                                <input type="text" id="form_label" placeholder="@lang('Mail Send')" name="label" class="form-control form--control bg--section" >
                             </div>
 
                             <div class="col-sm-12">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Overlay;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -88,6 +89,42 @@ class OverlayController extends Controller
           $contact->save();
           $msg = __('Successfully Updated Overlay');
           return response()->json($msg);
+    }
+
+    public function contact_delete($id){
+        $user = auth()->user();
+        $contact = Overlay::find($id);
+        $contact->delete();
+        Toastr::success('Data Deleted Successfully','Success');
+        return redirect()->back();
+    }
+
+    public function poll_store( Request $request)
+    {
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'question'=>'required',
+            'option'=>'required',
+            'option.*'=>'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+          $poll = new Overlay();
+          $poll->user_id = $user->id;
+          $poll->name = $request->name;
+          $poll->type= 'poll';
+          $json= array('question' => $request->question, 'options' => $request->option); 
+          $poll->data = json_encode($json);
+          $poll->save();
+          $msg = __('Successfully Added New Overlay');
+          return response()->json($msg);
+
     }
 
    
