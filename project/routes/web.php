@@ -463,7 +463,7 @@ Route::prefix('user')->group(function() {
     // poll overlay route
     Route::post('/poll-overlay', [OverlayController::class,'poll_store'])->name('user.store-poll-overlay');
     Route::get('/edit-poll-overlay/{id}', [OverlayController::class,'poll_edit'])->name('user.edit-poll-overlay');
-    
+    Route::post('/update-poll-overlay/{id}', [OverlayController::class,'poll_update'])->name('user.update-poll-overlay');
 
 
 

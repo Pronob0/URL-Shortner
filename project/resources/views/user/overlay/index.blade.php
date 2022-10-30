@@ -90,15 +90,11 @@
                     </div>
                     <div class="card-footer">
                         <p> <small>{{ $over->created_at->diffForHumans() }}</small></p>
-                    </div>
-                   
-                    
+                    </div>    
                 </div>
             </div>
                 
-            @endforeach 
-           
-            
+            @endforeach             
         </div>
     </div>
    

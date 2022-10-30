@@ -127,6 +127,39 @@ class OverlayController extends Controller
 
     }
 
+    public function poll_edit($id){
+        $user = auth()->user();
+        $poll = Overlay::find($id);
+        $data= json_decode($poll->data);
+        return view('user.overlay.poll_edit', compact('user', 'poll', 'data'));
+    }
+
+    public function poll_update(Request $request, $id){
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'question'=>'required',
+           
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+
+          $poll = Overlay::find($id);
+          $poll->user_id = $user->id;
+          $poll->name = $request->name;
+          $poll->type= 'poll';
+          $json= array('question' => $request->question, 'options' => $request->option); 
+          $poll->data = json_encode($json);
+          $poll->save();
+          $msg = __('Successfully Updated Overlay');
+          return response()->json($msg);
+    }
+
    
 
     
