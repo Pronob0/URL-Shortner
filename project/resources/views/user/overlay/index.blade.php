@@ -72,17 +72,27 @@
                                
                                 <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
                                   <a  href="{{ route('user.edit-contact-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
-
                                   <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
+
+                                 
                                 </div>
-                                @else
+                                @elseif($over->type=="poll")
                                 <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
                                     <a  href="{{ route('user.edit-poll-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
-  
                                     <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
+
+
+                                  </div>
+
+                                @else
+                                <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
+                                    <a  href="{{ route('user.edit-message-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
+                                    <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
+
                                   </div>
                                  @endif
-
+                                   
+                                 
                               </div> 
                               <small class="bg-primary text-light p-1 rounded" style="font-size: 12px">{{ $over->type }}</small>
                             

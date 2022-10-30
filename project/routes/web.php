@@ -464,6 +464,13 @@ Route::prefix('user')->group(function() {
     Route::post('/poll-overlay', [OverlayController::class,'poll_store'])->name('user.store-poll-overlay');
     Route::get('/edit-poll-overlay/{id}', [OverlayController::class,'poll_edit'])->name('user.edit-poll-overlay');
     Route::post('/update-poll-overlay/{id}', [OverlayController::class,'poll_update'])->name('user.update-poll-overlay');
+ 
+
+    //Message Overlay 
+    Route::post('/message-overlay', [OverlayController::class,'message_store'])->name('user.store-message-overlay');
+    Route::get('/edit-message-overlay/{id}', [OverlayController::class,'message_edit'])->name('user.edit-message-overlay');
+    Route::post('/update-message-overlay/{id}', [OverlayController::class,'message_update'])->name('user.update-message-overlay');
+
 
 
 
