@@ -457,7 +457,20 @@ Route::prefix('user')->group(function() {
     Route::post('/contact-overlay', [OverlayController::class,'contact_store'])->name('user.store-contact-overlay');
     Route::get('/edit-contact-overlay/{id}', [OverlayController::class,'contact_edit'])->name('user.edit-contact-overlay');
     Route::post('/update-contact-overlay/{id}', [OverlayController::class,'contact_update'])->name('user.update-contact-overlay');
-    
+    Route::get('/delete-contact-overlay/{id}', [OverlayController::class,'contact_delete'])->name('user.delete-contact-overlay');
+
+
+    // poll overlay route
+    Route::post('/poll-overlay', [OverlayController::class,'poll_store'])->name('user.store-poll-overlay');
+    Route::get('/edit-poll-overlay/{id}', [OverlayController::class,'poll_edit'])->name('user.edit-poll-overlay');
+    Route::post('/update-poll-overlay/{id}', [OverlayController::class,'poll_update'])->name('user.update-poll-overlay');
+ 
+
+    //Message Overlay 
+    Route::post('/message-overlay', [OverlayController::class,'message_store'])->name('user.store-message-overlay');
+    Route::get('/edit-message-overlay/{id}', [OverlayController::class,'message_edit'])->name('user.edit-message-overlay');
+    Route::post('/update-message-overlay/{id}', [OverlayController::class,'message_update'])->name('user.update-message-overlay');
+
 
 
 

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Overlay;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class OverlayController extends Controller
 {
@@ -86,6 +88,172 @@ class OverlayController extends Controller
           $json= array('email' => $request->email, 'subject' => $request->subject, 'label' => $request->label); 
           $contact->data = json_encode($json);
           $contact->save();
+          $msg = __('Successfully Updated Overlay');
+          return response()->json($msg);
+    }
+
+    public function contact_delete($id){
+        $user = auth()->user();
+        $contact = Overlay::find($id);
+        $contact->delete();
+        Toastr::success('Data Deleted Successfully','Success');
+        return redirect()->back();
+    }
+
+    public function poll_store( Request $request)
+    {
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'question'=>'required',
+            'option'=>'required',
+            'option.*'=>'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+          $poll = new Overlay();
+          $poll->user_id = $user->id;
+          $poll->name = $request->name;
+          $poll->type= 'poll';
+          $json= array('question' => $request->question, 'options' => $request->option); 
+          $poll->data = json_encode($json);
+          $poll->save();
+          $msg = __('Successfully Added New Overlay');
+          return response()->json($msg);
+
+    }
+
+    public function poll_edit($id){
+        $user = auth()->user();
+        $poll = Overlay::find($id);
+        $data= json_decode($poll->data);
+        return view('user.overlay.poll_edit', compact('user', 'poll', 'data'));
+    }
+
+    public function poll_update(Request $request, $id){
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'question'=>'required',
+           
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+
+          $poll = Overlay::find($id);
+          $poll->user_id = $user->id;
+          $poll->name = $request->name;
+          $poll->type= 'poll';
+          $json= array('question' => $request->question, 'options' => $request->option); 
+          $poll->data = json_encode($json);
+          $poll->save();
+          $msg = __('Successfully Updated Overlay');
+          return response()->json($msg);
+    }
+
+
+    public function message_store( Request $request)
+    {
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'message'=>'required',
+            'image'=>'required|mimes:jpeg,jpg,png',
+            'link'=>'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+          $message = new Overlay();
+          $message->user_id = $user->id;
+          $message->name = $request->name;
+          $message->type= 'message';
+
+          if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.Str::random(2).$image->getClientOriginalExtension();
+            $image->move('assets/images', $name);
+            
+        }
+        else{
+            $name = null;
+        }
+        
+
+          $json= array('message' => $request->message, 'link' => $request->link, 'image' => $name, 'button' => $request->btn_text, 'label' => $request->label); 
+
+          $message->data = json_encode($json);
+          $message->save();
+          $msg = __('Successfully Added New Overlay');
+          return response()->json($msg);
+
+    }
+
+    public function message_edit($id){
+        $user = auth()->user();
+        $message = Overlay::find($id);
+        $data= json_decode($message->data);
+        return view('user.overlay.message_edit', compact('user', 'message', 'data'));
+    }
+
+    public function message_update(Request $request, $id){
+        $user = auth()->user();
+
+        $rules =
+        [
+            'name' => 'required',
+            'message'=>'required',
+            'image'=>'mimes:jpeg,jpg,png',
+            'link'=>'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+          }
+
+          $message = Overlay::find($id);
+          $message->user_id = $user->id;
+          $message->name = $request->name;
+          $message->type= 'message';
+          $data= json_decode($message->data);
+
+          if($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time().'.'.Str::random(2).$image->getClientOriginalExtension();
+            $image->move('assets/images', $name);
+
+            if($data->image != null)
+            {
+                if (file_exists(public_path().'/assets/images/'.$data->image)) {
+                    unlink(public_path().'/assets/images/'.$data->image);
+                }
+            }
+            
+        }
+        else{
+            $name = $data->image;
+        }
+        
+
+          $json= array('message' => $request->message, 'link' => $request->link, 'image' => $name, 'button' => $request->btn_text, 'label' => $request->label); 
+
+          $message->data = json_encode($json);
+          $message->save();
           $msg = __('Successfully Updated Overlay');
           return response()->json($msg);
     }

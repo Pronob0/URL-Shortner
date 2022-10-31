@@ -16,6 +16,7 @@ use App\Models\Admin\Service;
 use App\Models\Admin\Subscriber;
 use App\Models\Admin\Subscription;
 use App\Models\Link;
+use App\Models\Overlay;
 use App\Models\Splash;
 use App\Models\User;
 use App\Models\UserSubscription;
@@ -186,6 +187,8 @@ if(Auth::user()){
 
     public function createshort(Request $request){
 
+        
+
         if(Auth::user()){
 
             $user=Auth::user();
@@ -240,6 +243,9 @@ if(Auth::user()){
                 if($request->type=='custom_splash'){
                     $link->splash_id=$request->splash_id;
                 }
+                if($request->type=='custom_overlay'){
+                    $link->overlay_id=$request->overlay_id;
+                }
                 $link->url=$request->url;
                 if($request->expire_day){
                     $link->expire_day=$request->expire_day;
@@ -248,6 +254,7 @@ if(Auth::user()){
                     $link->expire_day=$subscription->expired_limit;
                 } 
                 $link->planid=$user->planid;
+                
                 $link->save();
                 $msg = 'Link Shorted Successfully';
                 return response()->json(['msg'=>$msg, 'link'=>$link->alias]);
@@ -514,6 +521,14 @@ public function contactemail(Request $request)
                             return view('front.advertise',compact('ads','link'));
         
                         }
+                    }
+
+                    elseif($link->type=='custom_overlay'){
+                        $overlay=Overlay::where('id',$link->overlay_id)->first();
+                        $overlay_data=json_decode($overlay->data);
+                        $link->click = $link->click+1;
+                        $link->update();
+                        return view('front.overlay',compact('overlay_data','link','overlay'));
                     }
                      else{
                         if($link->splash_id!=NULL){

@@ -2105,6 +2105,37 @@ header.active {
 .ln-text{
     font-size: 11px !important;
 }
+img#show {
+    max-width: 60px;
+    max-height: 60px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+.tag-label {
+    position: absolute;
+    background-color: #fff;
+    top: 11px;
+    right: -23px;
+    color: #000;
+    padding: 0px 22px;
+    font-size: 11px;
+    font-weight: 700;
+    width: 89px;
+    height: 22px;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    text-align: center;
+    overflow: hidden;
+}
+.content{
+    font-size: 14px;
+}
+.mes {
+    padding: 0.15rem 0.5rem;
+    font-size: .75rem;
+    border-radius: 0.1rem;
+}
 
 .chat-wrapper-body {
     border: 1px solid var(--border-clr);

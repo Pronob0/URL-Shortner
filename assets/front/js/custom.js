@@ -126,7 +126,7 @@
 							toastr.error(data.errors[error]);
 						}
 					} else {
-						$('#userform').find(':input').val(" ");
+						$("#userform")[0].reset();
 						toastr.success(data);
 						
 					}

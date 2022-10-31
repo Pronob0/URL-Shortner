@@ -25,35 +25,34 @@
             <div class="dashboard--content-item">
                 <div class="row">
                     <div class="col-md-8">
-                        <form id="userform" action="{{route('user.store-poll-overlay')}}" method="POST">
+                        <form id="userform" action="{{route('user.update-poll-overlay',$poll->id)}}" method="POST">
                 @csrf
                 <div class="profile--card">
                         <div class="row gy-4">
                             <div class="col-sm-8 col-xxl-4">
                                 <label for="name" class="form-label">@lang('Name')</label>
                                 <input type="text" id="name" name="name" class="form-control form--control bg--section"
-                                    value="" required="" placeholder="{{ __('Enter Poll Overlay Name') }}">
+                                    value="{{ $poll->name }}" required="" placeholder="{{ __('Enter Poll Overlay Name') }}">
                             </div>
                             <div class="col-sm-8 col-xxl-4">
                                 <label for="question" class="form-label">@lang('Question')</label>
-                                <input  type="text" id="question" class="form-control form--control bg--section"
+                                <input  type="text" value="{{ $data->question }}" id="question" class="form-control form--control bg--section"
                                      name="question" required placeholder="@lang('Enter Your Question')">
                             </div>
                             <hr>
                             <h3>@lang('Options')</h3>
 
+                            @foreach ($data->options as $item)
                             <div class="col-sm-12 col-xxl-12 " >
                                 
                                 <input  type="text" id="subject" class="form-control form--control bg--section option"
-                                     name="option[]" ref="first" required placeholder="Option here">
+                                     name="option[]" ref="{{$loop->iteration}}" value="{{ $item }}"  placeholder="Option here">
                                      
                             </div>
-                            <div class="col-sm-12 col-xxl-12 " >
-                                
-                                <input  type="text" ref="second" id="subject" class="form-control form--control bg--section option"
-                                     name="option[]" required placeholder="Option here">
-                                     
-                            </div>
+                            @endforeach
+
+                            
+                            
                             <div class="col-sm-12 col-xxl-12 " id="option">
 
                             </div>
@@ -67,7 +66,7 @@
                                     <button type="submit" class="cmn--btn submit-btn">@lang('Submit')</button>
                                 </div>
                             </div>
-                            <input type="hidden" value="{{ $slug }}" name="type">
+                            
                         </div>
                 </div>
             </form>
@@ -76,10 +75,13 @@
                         
                         <div class="card mt-3">
                             <div class="card-body">
-                                <h5 class="card-title " id="form-title">@lang('Your Question Here? ')</h5>
+                                <h5 class="card-title " id="form-title">{{ $data->question }}</h5>
                                 <div class=" mt-4 mb-4" id="paragraph">
-                                    <p class="first">#1</p>
-                                    <p class="second">#2</p>
+                                    @foreach ($data->options as $item)
+
+                                    <p class="{{ $loop->iteration }}">{{ $item }}</p>
+                                    
+                                    @endforeach
                                 </div>
                                 
                                 <button class="btn btn-primary btn-sm" type="button">@lang('Vote')</button>

@@ -67,12 +67,32 @@
                                         <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                       </svg>
                                 </button>
+
+                                @if($over->type=="contact")
                                
                                 <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
                                   <a  href="{{ route('user.edit-contact-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
+                                  <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
 
-                                  <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="">@lang("Delete")</a>
+                                 
                                 </div>
+                                @elseif($over->type=="poll")
+                                <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
+                                    <a  href="{{ route('user.edit-poll-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
+                                    <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
+
+
+                                  </div>
+
+                                @else
+                                <div class="dropdown-menu" x-placement="bottom-start" aria-labelledby="dropdown">
+                                    <a  href="{{ route('user.edit-message-overlay',$over->id) }}"   class="dropdown-item link-status" >@lang("Edit")</a>
+                                    <a  href="javascript:;" data-bs-toggle="modal" data-bs-target="#deleteModal" class="dropdown-item link-status dismiss" data-href="{{ route('user.delete-contact-overlay',$over->id) }}">@lang("Delete")</a>
+
+                                  </div>
+                                 @endif
+                                   
+                                 
                               </div> 
                               <small class="bg-primary text-light p-1 rounded" style="font-size: 12px">{{ $over->type }}</small>
                             
@@ -80,15 +100,11 @@
                     </div>
                     <div class="card-footer">
                         <p> <small>{{ $over->created_at->diffForHumans() }}</small></p>
-                    </div>
-                   
-                    
+                    </div>    
                 </div>
             </div>
                 
-            @endforeach 
-           
-            
+            @endforeach             
         </div>
     </div>
    
@@ -105,13 +121,13 @@ aria-labelledby="statusModalTitle" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered" role="document">
 <div class="modal-content">
     <div class="modal-header">
-    <h5 class="modal-title text-center">{{ __("Delete Splash") }}</h5>
+    <h5 class="modal-title text-center">{{ __("Delete Overlay") }}</h5>
     <button type="button" class="close btn btn--danger" data-bs-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
     </div>
     <div class="modal-body">
-        <p class="text-center">{{ __("You are about to delete this Splash.") }}</p>
+        <p class="text-center">{{ __("You are about to delete this Overlay.") }}</p>
         <p class="text-center">{{ __("Do you want to proceed?") }}</p>
     </div>
     <div class="modal-footer">

@@ -91,6 +91,8 @@ class SplashController extends Controller
             'title' => 'required',
             'product' => 'required|url',
         ];
+
+        // dd($request->all());
        
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -107,7 +109,7 @@ class SplashController extends Controller
             $image = $request->file('banner');
             $name = time().'.'.$image->getClientOriginalExtension();
             $image->move('assets/images/splash', $name);
-            $splash->banner = $name;
+            
 
 
             if($splash->banner != null){
@@ -116,6 +118,7 @@ class SplashController extends Controller
                     unlink($image_path);
                 }
             }
+            $splash->banner = $name;
         }
 
         
@@ -125,7 +128,7 @@ class SplashController extends Controller
             $name = time().'.'.Str::random(2).$image->getClientOriginalExtension();
          
             $image->move('assets/images/splash', $name);
-            $splash->avatar = $name;
+            
 
             if($splash->avatar != null){
                 $image_path = "assets/images/splash/".$splash->avatar;
@@ -133,6 +136,7 @@ class SplashController extends Controller
                     unlink($image_path);
                 }
             }
+            $splash->avatar = $name;
         }
         
         $splash->update();

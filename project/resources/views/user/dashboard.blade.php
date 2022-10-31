@@ -134,6 +134,10 @@
                                     @if(Auth::user()->splash->count() > 0)
                                     <option value="custom_splash">@lang('Custom Splash')</option>
                                     @endif
+
+                                    @if(Auth::user()->overlay->count() > 0)
+                                    <option value="custom_overlay">@lang('Custom Overlay')</option>
+                                    @endif
                                     
                                 </select>
                             </div>
@@ -143,6 +147,16 @@
                                 <select id="splash_id" class="form-control" name="splash_id">
                                     @foreach (Auth::user()->splash as $sp)
                                     <option value="{{ $sp->id }}">{{ $sp->name }}</option>     
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3 col-sm-6 d-none" id="overlay_div">
+                                <label for="overlay_id">@lang('Custom Overlay')</label>
+                                <select id="overlay_id" class="form-control" name="overlay_id">
+                                    @foreach (Auth::user()->overlay as $overlay)
+                                    <option value="{{ $overlay->id }}">{{ $overlay->name }}</option>     
                                     @endforeach
                                     
                                 </select>
@@ -174,7 +188,7 @@
                             
                             <div class="title">
                                 
-                               <a href="">{{ $key+1 }}. {{ get_title($link->url) }}</a>
+                               <a href="{{ url('/'.$link->alias)}}">{{ $key+1 }}. {{ get_title($link->url) }}</a>
                                <p><small class="ln-text">{{ \Carbon\Carbon::parse($link->created_at)->diffForHumans() }} - {{ $link->click }} {{ __('Clicks') }}</small></p>
                                <hr>
                                 
@@ -276,6 +290,19 @@ $(document).ready(function(){
         }
         else{
             $('#splash_div').addClass('d-none');
+        } 
+    });
+    });
+
+
+    $(document).ready(function(){
+        $('#type').on('change',function(){
+            var conceptName = $('#type').find(":selected").val();
+            if(conceptName == 'custom_overlay'){
+                $('#overlay_div').removeClass('d-none');
+        }
+        else{
+            $('#overlay_div').addClass('d-none');
         } 
     });
     });
