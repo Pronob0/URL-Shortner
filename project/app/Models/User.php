@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasMany(('App\Models\Splash'));
     }
 
+    public function overlay(){
+        return $this->hasMany(('App\Models\Overlay'));
+    }
+
   public function subscribes()
   {
       return $this->hasMany('App\Models\UserSubscription');

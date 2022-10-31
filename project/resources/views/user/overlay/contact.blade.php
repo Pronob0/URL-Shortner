@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             
-                            <input type="hidden" value="{{ $slug }}" name="type">
+                           
                         </div>
                 </div>
 

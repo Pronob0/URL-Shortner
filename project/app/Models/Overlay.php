@@ -14,4 +14,9 @@ class Overlay extends Model
         'type',
         'data',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
