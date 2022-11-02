@@ -20,7 +20,7 @@
          </div>
          <div class="card-body">
             <div class="gocover" style="background: url({{asset('assets/images/'.$gs->admin_loader)}}) no-repeat scroll center center rgba(45, 45, 45, 0.5);"></div>
-            <form class="geniusform" action="{{ route('admin.gs.update') }}" method="POST" enctype="multipart/form-data">
+            <form class="geniusform" action="{{ route('admin.gs.update.mail') }}" method="POST" enctype="multipart/form-data">
                @include('includes.admin.form-both')
                {{ csrf_field() }}
                <div class="form-group">

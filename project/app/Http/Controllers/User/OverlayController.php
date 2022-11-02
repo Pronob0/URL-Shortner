@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Classes\GeniusMailer;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Generalsetting;
 use App\Models\Overlay;
+use App\Models\PollAnswers;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -225,7 +229,6 @@ class OverlayController extends Controller
         if ($validator->fails()) {
             return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
           }
-
           $message = Overlay::find($id);
           $message->user_id = $user->id;
           $message->name = $request->name;
@@ -256,6 +259,88 @@ class OverlayController extends Controller
           $message->save();
           $msg = __('Successfully Updated Overlay');
           return response()->json($msg);
+    }
+
+
+
+    public function contact(Request $request)
+    {
+        $gs = Generalsetting::findOrFail(1);
+       
+            $rules=[
+                'name'=>'required',
+                'email'=>'required|email',
+                'message'=>'required',
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+          return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+        }
+
+        // Login Section
+        $ps = DB::table('pagesettings')->where('id','=',1)->first();
+        $subject = "Email From Of ".$request->name;
+        $to = $request->to;
+        $name = $request->name;
+       
+        $from = $request->email;
+        $msg = "Name: ".$name."\nEmail: ".$from."\nMessage: ".$request->message;
+        if($gs->is_smtp)
+        {
+        $data = [
+            'to' => $to,
+            'subject' => $subject,
+            'body' => $msg,
+        ];
+
+        $mailer = new GeniusMailer();
+        $mailer->sendCustomMail($data);
+        }
+        else
+        {
+        $headers = "From: ".$gs->from_name."<".$gs->from_email.">";
+        mail($to,$subject,$msg,$headers);
+        }
+        
+        // Redirect Section
+        $msg='Your Message Sent Successfully';
+        return response()->json($msg);
+    }
+
+    public function poll(Request $request)
+    {
+        $gs = Generalsetting::findOrFail(1);
+       
+            $rules=[
+                'answer'=>'required',
+                
+            ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+          return response()->json(array('errors' => $validator->getMessageBag()->toArray()));
+        }
+
+        $opoll= PollAnswers::where('ipaddress', $request->ipaddress)->where('poll_id', $request->poll_id)->first();
+        $poll =new PollAnswers();
+
+        if($opoll == null)
+        {
+            $input = $request->all();
+            $poll->fill($input)->save();
+        }
+        else{
+           $msg = 1;
+           return response()->json($msg);
+
+        }
+        
+        // Redirect Section
+        $msg='You voted Successfully';
+        return response()->json($msg);
     }
 
    

@@ -303,7 +303,14 @@
 			 processData: false,
 			 success:function(data)
 			 {
+				if(data==1){
+					toastr.error('You have already voted');
+				}
+				else{
+
+				
 				if ((data.errors)) {
+					toastr.error(data);
 				
 				  for(var error in data.errors)
 				  {
@@ -314,10 +321,22 @@
 				else
 				{
 					toastr.success(data);
+					$('#label_text').hide();
+				    $('.overcontact').hide();
+					
+					if(isset(link)){
+						window.location = link;
+					}
+					
+					
+					
   
 				}
+			}
 				$('.gocover').hide();
 				$('button.submit-btn').prop('disabled',false);
+				
+
 
 				
 			 }

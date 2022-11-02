@@ -100,15 +100,15 @@ class GeniusMailer
             $this->mail->Subject = $mailData['subject']; 
 
             $this->mail->Body = $mailData['body']; 
-
+           // dd($this->mail);
             $this->mail->send();
 
         }
         catch (Exception $e){
-           
+          dd($e);
 
         }
-        return true;
+        //return true;
         }
 
       

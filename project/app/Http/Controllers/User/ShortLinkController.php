@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Subscription;
 use App\Models\Link;
+use App\Models\PollAnswers;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,6 +86,10 @@ class ShortLinkController extends Controller
     public function delete($id){
         $link=Link::findOrFail($id);
         $link->delete();
+        $polls= PollAnswers::where('link_id',$id)->get();
+         foreach ($polls as $poll){
+              $poll->delete();
+         }
         Toastr::success('Data Deleted Successfully','Success');
         return redirect()->back();
     }

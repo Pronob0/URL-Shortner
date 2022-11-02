@@ -125,6 +125,7 @@
     let mainurl = '{{ url('/') }}';
      var loader = {{ $gs->is_loader }};
      var gs      = {!! json_encode(DB::table('generalsettings')->where('id','=',1)->first(['is_cookie'])) !!};
+	
 
 </script>
 

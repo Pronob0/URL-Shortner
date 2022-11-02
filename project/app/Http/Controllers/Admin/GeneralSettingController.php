@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Generalsetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -211,6 +213,33 @@ class GeneralSettingController extends Controller
         }
 
         }
+    }
+
+    public function generalMailUpdate(Request $request)
+    {
+        $input = $request->all();
+      
+        $maildata = Generalsetting::findOrFail(1);
+
+        
+
+            $this->setEnv('MAIL_HOST',$request->mail_host,env('MAIL_HOST'));
+            $this->setEnv('MAIL_PORT',$request->mail_port,env('MAIL_PORT'));
+            $this->setEnv('MAIL_USERNAME',$request->mail_user,env('MAIL_USERNAME'));
+            $this->setEnv('MAIL_PASSWORD',$request->mail_pass,env('MAIL_PASSWORD'));
+            $this->setEnv('MAIL_ENCRYPTION',$request->mail_encryption,env('MAIL_ENCRYPTION'));
+            $this->setEnv('MAIL_FROM_ADDRESS',$request->from_email,env('MAIL_FROM_ADDRESS'));
+            $this->setEnv('MAIL_FROM_NAME',$request->from_name,env('MAIL_FROM_NAME'));
+
+    
+
+
+        $maildata->update($input);
+
+        //--- Redirect Section
+        $msg = 'Mail Data Updated Successfully.';
+        return response()->json($msg);
+        //--- Redirect Section Ends
     }
 
     public function status($field,$value)

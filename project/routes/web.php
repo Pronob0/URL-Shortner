@@ -202,7 +202,7 @@ Route::get('/email-config', [EmailController::class,'config'])->name('admin.mail
 Route::get('/groupemail', [EmailController::class,'groupemail'])->name('admin.group.show');
 Route::post('/groupemailpost', [EmailController::class,'groupemailpost'])->name('admin.group.submit');
 //------------ ADMIN EMAIL SETTINGS SECTION ENDS ------------
-
+Route::post('/general-settings/update/mail', [GeneralSettingController::class,'generalMailUpdate'])->name('admin.gs.update.mail');
 
 
 
@@ -470,6 +470,9 @@ Route::prefix('user')->group(function() {
     Route::post('/message-overlay', [OverlayController::class,'message_store'])->name('user.store-message-overlay');
     Route::get('/edit-message-overlay/{id}', [OverlayController::class,'message_edit'])->name('user.edit-message-overlay');
     Route::post('/update-message-overlay/{id}', [OverlayController::class,'message_update'])->name('user.update-message-overlay');
+
+    Route::post('/overlay/contact/message',[OverlayController::class,'contact'])->name('overlay.contact');
+    Route::post('/overlay/poll/message',[OverlayController::class,'poll'])->name('overlay.poll');
 
 
 
